@@ -62,6 +62,7 @@ OPTION(ENABLE_MATLAB "Enable MATLAB linkage to Tensor Toolbox" OFF)
 OPTION(FLOAT_TYPE "C++ data type used for floating-point values" OFF)
 OPTION(INDEX_TYPE "C++ data type used for tensor indices" OFF)
 OPTION(ENABLE_GCP "Enable experimental GCP code" ON)
+OPTION(ENABLE_TESTS "Enable tests" OFF)
 
 IF(FLOAT_TYPE)
   SET(GENTEN_FLOAT_TYPE ${FLOAT_TYPE})
@@ -587,21 +588,22 @@ ENDIF()
 #------------------------------------------------------------
 #---- Testing
 #------------------------------------------------------------
-enable_testing()
+if(ENABLE_TESTS)
+  enable_testing()
 
 # Unit tests -- tests don't return nonzero on failure, so have to grep output
-add_test(Genten_Unit_Tests ${Genten_BINARY_DIR}/bin/unit_tests)
-SET_TESTS_PROPERTIES(Genten_Unit_Tests PROPERTIES FAIL_REGULAR_EXPRESSION "Error")
+  add_test(Genten_Unit_Tests ${Genten_BINARY_DIR}/bin/unit_tests)
+  SET_TESTS_PROPERTIES(Genten_Unit_Tests PROPERTIES FAIL_REGULAR_EXPRESSION "Error")
 
 # mttkrp -- returns nonzero on failure
-add_test(Genten_MTTKRP_random_atomic ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method atomic)
-add_test(Genten_MTTKRP_random_dupl ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method duplicated)
-add_test(Genten_MTTKRP_random_perm ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method perm)
-add_test(Genten_MTTKRP_aminoacid_atomic ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method atomic)
-add_test(Genten_MTTKRP_aminoacid_dupl ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method duplicated)
-add_test(Genten_MTTKRP_aminoacid_perm ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method perm)
-add_test(Genten_MTTKRP_random_dense ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [30,40,50] --dense)
-
+  add_test(Genten_MTTKRP_random_atomic ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method atomic)
+  add_test(Genten_MTTKRP_random_dupl ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method duplicated)
+  add_test(Genten_MTTKRP_random_perm ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [300,400,500] --nnz 1000 --mttkrp-method perm)
+  add_test(Genten_MTTKRP_aminoacid_atomic ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method atomic)
+  add_test(Genten_MTTKRP_aminoacid_dupl ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method duplicated)
+  add_test(Genten_MTTKRP_aminoacid_perm ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --input ${Genten_BINARY_DIR}/data/aminoacid_data.txt --mttkrp-method perm)
+  add_test(Genten_MTTKRP_random_dense ${Genten_BINARY_DIR}/bin/perf_MTTKRP --nc 16 --dims [30,40,50] --dense)
+endif()
 #------------------------------------------------------------
 #---- Config
 #------------------------------------------------------------
