@@ -485,16 +485,19 @@ endif()
 #---- Specifications for building each performance test.
 #---- In each case specify the executable and its link library dependencies.
 
-ADD_EXECUTABLE (
-  genten
-  ${Genten_SOURCE_DIR}/driver/Genten_Driver.cpp
-  )
-TARGET_LINK_LIBRARIES (genten ${GENTEN_LINK_LIBS})
-INSTALL (
-  TARGETS genten
-  EXPORT genten
-  DESTINATION ${CMAKE_INSTALL_BINDIR}
-  )
+#matt
+if(FALSE)
+  ADD_EXECUTABLE (
+    genten
+    ${Genten_SOURCE_DIR}/driver/Genten_Driver.cpp
+    )
+  TARGET_LINK_LIBRARIES (genten ${GENTEN_LINK_LIBS})
+  INSTALL (
+    TARGETS genten
+    EXPORT genten
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+endif()
 
 #------------------------------------------------------------
 #---- Matlab
