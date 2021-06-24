@@ -401,36 +401,38 @@ ADD_SUBDIRECTORY(joint_moments)
 
 #---- Specifications for building unit_tests.
 
-SET(UNIT_TEST_SRCS
-  ${Genten_SOURCE_DIR}/test/Genten_Test_TTM.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_Array.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_CpAls.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_FacMatrix.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_IndxArray.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_IOtext.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_Ktensor.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_MixedFormats.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_Sptensor.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_Tensor.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_UnitTests.cpp
-  ${Genten_SOURCE_DIR}/test/Genten_Test_Utils.cpp
-  )
-IF (ENABLE_GCP)
-   SET(UNIT_TEST_SRCS ${UNIT_TEST_SRCS}
-     ${Genten_SOURCE_DIR}/test/Genten_Test_GCP_SGD.cpp
-     )
-  IF(ENABLE_ROL)
-    SET(UNIT_TEST_SRCS ${UNIT_TEST_SRCS}
-      ${Genten_SOURCE_DIR}/test/Genten_Test_GCP_Opt.cpp
-      )
+if(ENABLE_TESTS)
+  SET(UNIT_TEST_SRCS
+    ${Genten_SOURCE_DIR}/test/Genten_Test_TTM.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_Array.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_CpAls.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_FacMatrix.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_IndxArray.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_IOtext.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_Ktensor.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_MixedFormats.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_Sptensor.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_Tensor.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_UnitTests.cpp
+    ${Genten_SOURCE_DIR}/test/Genten_Test_Utils.cpp
+    )
+  IF (ENABLE_GCP)
+     SET(UNIT_TEST_SRCS ${UNIT_TEST_SRCS}
+       ${Genten_SOURCE_DIR}/test/Genten_Test_GCP_SGD.cpp
+       )
+    IF(ENABLE_ROL)
+      SET(UNIT_TEST_SRCS ${UNIT_TEST_SRCS}
+        ${Genten_SOURCE_DIR}/test/Genten_Test_GCP_Opt.cpp
+        )
+    ENDIF()
   ENDIF()
-ENDIF()
 
-ADD_EXECUTABLE (
-  unit_tests
-  ${UNIT_TEST_SRCS}
-  )
-TARGET_LINK_LIBRARIES (unit_tests ${GENTEN_LINK_LIBS})
+  ADD_EXECUTABLE (
+    unit_tests
+    ${UNIT_TEST_SRCS}
+    )
+  TARGET_LINK_LIBRARIES (unit_tests ${GENTEN_LINK_LIBS})
+endif()
 
 
 #------------------------------------------------------------
