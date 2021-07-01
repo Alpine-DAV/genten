@@ -229,6 +229,7 @@ CONFIGURE_FILE (
   ${Genten_BINARY_DIR}/CMakeInclude/CMakeInclude.h
   )
 
+set(config_file ${Genten_BINARY_DIR}/CMakeInclude/CMakeInclude.h)
 
 #------------------------------------------------------------
 #---- INCLUDE Directories
@@ -249,7 +250,7 @@ FILE (GLOB genten_headers
   ${Genten_SOURCE_DIR}/src/rol*.hpp
   )
 INSTALL (
-  FILES ${genten_headers}
+  FILES ${genten_headers} ${config_file}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/genten
   PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
   )
