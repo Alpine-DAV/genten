@@ -6,7 +6,8 @@ ADD_LIBRARY (
   gt_higher_moments
   ${Genten_SOURCE_DIR}/joint_moments/Genten_HigherMoments.cpp
   )
-TARGET_LINK_LIBRARIES(gt_higher_moments PUBLIC ${GENTEN_LINK_LIBS})
+
+TARGET_LINK_LIBRARIES(gt_higher_moments PRIVATE ${GENTEN_LINK_LIBS})
 
 
 INSTALL (

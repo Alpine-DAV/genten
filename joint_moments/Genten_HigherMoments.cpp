@@ -39,6 +39,11 @@
 //@HEADER
 
 #include "Genten_HigherMoments.hpp"
+
+#include <Kokkos_Core.hpp>
+#include "Genten_Kokkos.hpp"
+#include "Genten_Tensor.hpp"
+#include "Genten_IOtext.hpp"
 #include "Genten_FormCokurtosisSlice.hpp"
 #include "Genten_MathLibs_Wpr.hpp"
 #include "compute_krp.hpp"
@@ -53,7 +58,7 @@
 template <typename ExecSpace>
 void form_cokurtosis_tensor_naive(const Kokkos::View<ttb_real**, Kokkos::LayoutLeft, ExecSpace>& data_view,
                                   const ttb_indx nsamples, const ttb_indx nvars,
-                                  Genten::TensorT<ExecSpace>& moment_tensor) 
+                                  Genten::TensorT<ExecSpace>& moment_tensor)
 {
 
 }
@@ -158,7 +163,7 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
   //The Team Policy can also be specified with a 1D index, so we'll flatten the 2D index
   //Inside the kernel we will re-construct the 2D indices from the flattened index, x-index varying fastest
   ComputeKhatriRaoProduct<Space> compute_krp(nvars, nsamples, nteams_x, nteams_y, raw_data, krp_of_raw_data);
-  
+
   Kokkos::parallel_for(Kokkos::TeamPolicy<Space>(nteams, nthreads_per_team), compute_krp);
 
   //Now compute cokurtosis tensor = (1/nCols)(krp_of_raw * transp(krp_of_raw) )
@@ -178,7 +183,7 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
                krp_of_raw_data.data(), nvars*nvars,
                krp_of_raw_data.data(), nvars*nvars,
                beta,
-               cokurtosis_tensor.data(), nvars*nvars); 
+               cokurtosis_tensor.data(), nvars*nvars);
 #endif
 
   // Now that the matricised cokurt tensor is done, compute gram_matrix =  cokurt*transp(cokurt)
@@ -212,17 +217,17 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
   Kokkos::View<ttb_real*, Space> eig_vals = Kokkos::create_mirror_view(Space(), principal_vals);
   std::cout<<"Starting eigen decomposition of gram matrix"<<std::endl;
 
-  perform_eigen_decomp(nvars, gram_matrix, eig_vals); 
+  perform_eigen_decomp(nvars, gram_matrix, eig_vals);
 
   std::cout<<"Finished eigen decomposition"<<std::endl;
 
-  //Copy over mirrored views from device to host 
+  //Copy over mirrored views from device to host
   deep_copy(principal_vecs, gram_matrix);
-  deep_copy(principal_vals, eig_vals); 
+  deep_copy(principal_vals, eig_vals);
 
   //Now that principal_vecs/vals are on host, do a memcpy into ptrs passed in
   memcpy(pvecs, principal_vecs.data(), nvars*nvars*sizeof(double));
   memcpy(pvals, principal_vals.data(), nvars*sizeof(double) );
-} 
+}
 
 //}// namespace Genten

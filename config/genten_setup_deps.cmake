@@ -8,5 +8,6 @@ if(GENTEN_KOKKOS_DIR)
     ###############################################################################
     find_package(Kokkos REQUIRED
                  NO_DEFAULT_PATH
+                 COMPONENTS separable_compilation
                  PATHS ${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos)
 endif()

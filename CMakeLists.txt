@@ -88,7 +88,7 @@ INCLUDE (cmake/CheckCompilerVersion.cmake)
 
 # If we are doing an inline build of Kokkos
 IF(KOKKOS_INLINE_BUILD)
-
+  message(STATUS "enabling kokkos inline ************************************")
   # We must enable Lambda support in Kokkos
   IF(Kokkos_ENABLE_CUDA)
     SET(Kokkos_ENABLE_CUDA_LAMBDA ON CACHE BOOL "Enable lambdas for CUDA.")
