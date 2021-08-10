@@ -43,6 +43,8 @@ extern "C" {
 
 double * FormRawMomentTensor(double *raw_data_ptr, int nsamples, int nvars, const int order);
 
+void higher_moments_init();
+void higher_moments_finalize();
 void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nvars,
                                      double *pvecs, double *pvals);
 }
