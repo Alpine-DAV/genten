@@ -112,6 +112,8 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
                                      double *pvecs, double *pvals)
 {
 
+  Kokkos::initialize();
+
   typedef Genten::DefaultExecutionSpace Space;
   typedef Genten::TensorT<Space> Tensor_type;
   typedef Genten::DefaultHostExecutionSpace HostSpace;
@@ -228,6 +230,7 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
   //Now that principal_vecs/vals are on host, do a memcpy into ptrs passed in
   memcpy(pvecs, principal_vecs.data(), nvars*nvars*sizeof(double));
   memcpy(pvals, principal_vals.data(), nvars*sizeof(double) );
+  Kokkos::finalize();
 }
 
 //}// namespace Genten
