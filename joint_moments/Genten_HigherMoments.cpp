@@ -164,6 +164,7 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
     //HKif((nvars*nvars)%nthreads_per_team != 0) nteams_x += 1;
     int nteams_x = (int)( ceil( (double)(nvars*nvars)/((double)(nthreads_per_team)) ) );
     int nteams_y = 32; //hard-coding for now
+    int nteams = nteams_x * nteams_y;
 
     //std::cout<<"Launching KRP kernel with "<<nteams_x<<" "<<nteams_y<<" "<<nteams<<std::endl;
 
