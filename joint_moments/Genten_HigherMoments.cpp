@@ -159,18 +159,12 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
     }
 #endif //KOKKOS_ENABLE_CUDA
 
-
     int nthreads_per_team = 64;
     //HKint nteams_x = nvars*nvars/nthreads_per_team;
     //HKif((nvars*nvars)%nthreads_per_team != 0) nteams_x += 1;
     int nteams_x = (int)( ceil( (double)(nvars*nvars)/((double)(nthreads_per_team)) ) );
     int nteams_y = 32; //hard-coding for now
 
-#if defined(KOKKOS_ENABLE_CUDA) 
-    int nteams = nteams_x * nteams_y;
-#else
-    int nteams = 1;
-#endif
     //std::cout<<"Launching KRP kernel with "<<nteams_x<<" "<<nteams_y<<" "<<nteams<<std::endl;
 
     //We're using a 2D block of thread teams (nteams_x*nteams_y in number)
@@ -178,8 +172,14 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
     //Inside the kernel we will re-construct the 2D indices from the flattened index, x-index varying fastest
     ComputeKhatriRaoProduct<Space> compute_krp(nvars, nsamples, nteams_x, nteams_y, raw_data, krp_of_raw_data);
 
-    Kokkos::parallel_for(Kokkos::TeamPolicy<Space>(nteams, nthreads_per_team), compute_krp);
 
+#if defined(KOKKOS_ENABLE_CUDA) 
+    Kokkos::parallel_for(Kokkos::TeamPolicy<Space>(nteams, nthreads_per_team), compute_krp);
+#else
+    // general case, let kokkos choose the team size
+    Kokkos::parallel_for(Kokkos::TeamPolicy<Space>(nteams, Kokkos::AUTO), compute_krp);
+#endif
+    
     //Now compute cokurtosis tensor = (1/nCols)(krp_of_raw * transp(krp_of_raw) )
     ttb_real alpha = 1.0/ttb_real(nsamples); ttb_real beta = 0.0;
 #if defined(KOKKOS_ENABLE_CUDA) && defined(HAVE_CUBLAS)
