@@ -1,6 +1,16 @@
 if(GENTEN_KOKKOS_DIR)
-  if(NOT EXISTS ${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos/KokkosConfig.cmake)
-    MESSAGE(FATAL_ERROR "Could not find kokkos CMake include file (${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos/KokkosConfig.cmake)")
+    
+    # check for both lib64 and lib
+    if(EXISTS ${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos/)
+        set(GENTEN_KOKKOS_CMAKE_CONFIG_DIR ${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos/)
+    endif()
+
+    if(EXISTS ${GENTEN_KOKKOS_DIR}/lib/cmake/Kokkos/)
+        set(GENTEN_KOKKOS_CMAKE_CONFIG_DIR ${GENTEN_KOKKOS_DIR}/lib/cmake/Kokkos/)
+    endif()
+
+    if(NOT EXISTS ${GENTEN_KOKKOS_CMAKE_CONFIG_DIR}/KokkosConfig.cmake)
+        MESSAGE(FATAL_ERROR "Could not find kokkos CMake include file (${GENTEN_KOKKOS_CMAKE_CONFIG_DIR}/KokkosConfig.cmake)")
     endif()
 
     ###############################################################################
@@ -9,5 +19,5 @@ if(GENTEN_KOKKOS_DIR)
     find_package(Kokkos REQUIRED
                  NO_DEFAULT_PATH
                  COMPONENTS separable_compilation
-                 PATHS ${GENTEN_KOKKOS_DIR}/lib64/cmake/Kokkos)
+                 PATHS ${GENTEN_KOKKOS_CMAKE_CONFIG_DIR})
 endif()
