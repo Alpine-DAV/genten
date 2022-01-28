@@ -165,8 +165,12 @@ void ComputePrincipalKurtosisVectors(double *raw_data_ptr, int nsamples, int nva
     //HKif((nvars*nvars)%nthreads_per_team != 0) nteams_x += 1;
     int nteams_x = (int)( ceil( (double)(nvars*nvars)/((double)(nthreads_per_team)) ) );
     int nteams_y = 32; //hard-coding for now
-    int nteams = nteams_x * nteams_y;
 
+#if defined(KOKKOS_ENABLE_CUDA) 
+    int nteams = nteams_x * nteams_y;
+#else
+    int nteams = 1;
+#endif
     //std::cout<<"Launching KRP kernel with "<<nteams_x<<" "<<nteams_y<<" "<<nteams<<std::endl;
 
     //We're using a 2D block of thread teams (nteams_x*nteams_y in number)
