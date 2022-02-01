@@ -232,10 +232,10 @@ INCLUDE(GNUInstallDirs)
 #---- Configure the build type (debug or production).
 INCLUDE (cmake/ConfigureBuildType.cmake)
 
-#---- Define the build location as the default install directory.
-IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  SET (CMAKE_INSTALL_PREFIX build)
-ENDIF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+# #---- Define the build location as the default install directory.
+# IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+#   SET (CMAKE_INSTALL_PREFIX build)
+# ENDIF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 #---- Define system-dependent C++ preprocessing macros,
 #---- and copy to the build directory.
