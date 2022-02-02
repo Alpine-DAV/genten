@@ -18,8 +18,10 @@ if(NOT GENTEN_FOUND)
     set(GENTEN_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
 
     set(GENTEN_KOKKOS_DIR  "@KOKKOS_PATH@")
+    # advertise if cuda support is enabled
+    set(GENTEN_CUDA_ENABLED "@Kokkos_ENABLE_CUDA@")
 
-    # advertise if mfem support is enabled
+    # advertise if lapack support is enabled
     set(GENTEN_LAPACK_FOUND @LAPACK_FOUND@)
     set(GENTEN_LAPACK_LIBS "@LAPACK_LIBS@")
 

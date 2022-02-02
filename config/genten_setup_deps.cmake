@@ -20,4 +20,14 @@ if(GENTEN_KOKKOS_DIR)
                  NO_DEFAULT_PATH
                  COMPONENTS separable_compilation
                  PATHS ${GENTEN_KOKKOS_CMAKE_CONFIG_DIR})
+
 endif()
+
+###############################################################################
+# If we are using Cuda, we need to find the cuda toolkit 
+#Import Cuda Math Libs
+###############################################################################
+if(GENTEN_CUDA_ENABLED)
+    find_package(CUDAToolkit REQUIRED cublas cusolver)
+endif()
+
